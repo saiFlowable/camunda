@@ -42,4 +42,36 @@ public class SSLRestTemplate {
         return new RestTemplate(factory);
     }
 }
+import org.apache.http.client.HttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.conn.ssl.NoopHostnameVerifier;
+import org.apache.http.conn.ssl.TrustAllStrategy;
+import org.apache.http.ssl.SSLContexts;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
+import org.springframework.web.client.RestTemplate;
+
+import javax.net.ssl.SSLContext;
+
+public class SSLRestTemplate {
+
+    public static RestTemplate getRestTemplate() throws Exception {
+        // Create SSL context that trusts all certificates
+        SSLContext sslContext = SSLContexts.custom()
+                .loadTrustMaterial(null, new TrustAllStrategy())
+                .build();
+
+        // Build Apache HttpClient with SSL context
+        HttpClient httpClient = HttpClientBuilder.create()
+                .setSSLContext(sslContext)
+                .setSSLHostnameVerifier(NoopHostnameVerifier.INSTANCE)
+                .build();
+
+        // Use HttpClient in RestTemplate
+        HttpComponentsClientHttpRequestFactory factory = new HttpComponentsClientHttpRequestFactory(httpClient);
+        factory.setConnectTimeout(30000); // 30 seconds
+        factory.setReadTimeout(30000);
+
+        return new RestTemplate(factory);
+    }
+}
 
