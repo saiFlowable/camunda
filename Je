@@ -19,3 +19,26 @@ public class PostRequestBody {
         System.out.println(root.toString(4));  // Pretty print with indentation
     }
 }
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.RestTemplate;
+
+public class BooleanConsumer {
+
+    public static void main(String[] args) {
+        RestTemplate restTemplate = new RestTemplate();
+
+        // Replace with the actual public API URL that returns Boolean
+        String url = "https://api.public-boolean-example.com/status";
+
+        try {
+            ResponseEntity<Boolean> response = restTemplate.getForEntity(url, Boolean.class);
+            if (response.getStatusCode().is2xxSuccessful()) {
+                System.out.println("Response: " + response.getBody());
+            } else {
+                System.out.println("Failed with status code: " + response.getStatusCode());
+            }
+        } catch (Exception e) {
+            System.out.println("Error occurred: " + e.getMessage());
+        }
+    }
+}
