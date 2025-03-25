@@ -1,0 +1,21 @@
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+public class PostRequestBody {
+    public static void main(String[] args) {
+        // Create the JSON object
+        JSONObject input = new JSONObject();
+        input.put("customNotifTypeId", "OMLd0000000XZBAGA4");
+        input.put("targetId", "OMLd0000000XZBAGA4");
+        input.put("recipientIds", new JSONArray().put("005DW000008KHKYLAW"));
+        input.put("title", "Active");
+        input.put("body", "some message");
+        
+        // Wrap in a root object
+        JSONObject root = new JSONObject();
+        root.put("inputs", new JSONArray().put(input));
+        
+        // Print or use as needed
+        System.out.println(root.toString(4));  // Pretty print with indentation
+    }
+}
